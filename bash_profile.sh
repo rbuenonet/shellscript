@@ -1,6 +1,8 @@
-# for load this arquive, only open the file .zshenv or .bash_sprofile and write "source [LOCAL THIS FILE]"
-# next modified next line with name file
+# for load this arquive, only open the file .zshenv or .bash_sprofile and copy/paste next 2 command
+#ARQUIVE='/Users/renato/Projetos/_meus/shellscript/bash_profile.sh';
+#source $ARQUIVE;
 
+# next modified next line with name file
 ARQUIVO='.zshenv' #name default file
 # ARQUIVO='.bash_sprofile' #name default file
 
@@ -37,13 +39,9 @@ alias ll="c; ls -lah"
 alias edit='open -a "Visual Studio Code"'
 
 #alias control
-# alias aliasll='cat ~/.zshenv'
-# alias aliasedit='edit ~/.zshenv'
-# alias aliasreload='source ~/.zshenv'
-alias aliasll="cat ~/$ARQUIVO"
-alias aliasedit="edit ~/$ARQUIVO"
-alias aliasreload="source ~/$ARQUIVO"
-
+alias aliasll="cat ~/$ARQUIVO $ARQUIVE"
+alias aliasedit="edit ~/$ARQUIVO $ARQUIVE"
+alias aliasreload="c; source ~/$ARQUIVO"
 
 #alias ionic
 alias clean="rm -rf www platforms plugins;c"
