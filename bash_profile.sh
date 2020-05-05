@@ -1,3 +1,10 @@
+# for load this arquive, only open the file .zshenv or .bash_sprofile and write "source [LOCAL THIS FILE]"
+# next modified next line with name file
+
+ARQUIVO='.zshenv' #name default file
+# ARQUIVO='.bash_sprofile' #name default file
+
+
 #load plugin nvm - controll npm version
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -17,16 +24,12 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 
 #put the actual path and branch name
-# export PS1="%.%\ $(git_branch \( \))$"
-export PS1="\W ($(git_branch))$" #shortcuts
+if [[ $ARQUIVO == *"zshenv"* ]]; then
+    export PS1="%.%\ $(git_branch \( \))$"
+else
+    export PS1="\W ($(git_branch))$"
+fi;
 
-
-
-
-
-#diferença de arquivo
-ARQUIVO='.bash_profile'
-# ARQUIVO='.zshenv'
 
 #shortcuts
 alias c='for i in {1..100}; do echo -e "\n"; done; clear'
@@ -76,10 +79,11 @@ git_branch() {
 
 
 # update branch with other branch (default update with develop)
-# example: git_update_branch
-# example: git_update_branch brnach_destino
-# example: git_update_branch brnach_destino branch_origem
-git_update_branch(){
+alias git_update_branch="git_load_branch"
+# example: git_load_branch
+# example: git_load_branch brnach_destino
+# example: git_load_branch brnach_destino branch_origem
+git_load_branch(){
 
     if [ ! -z $1 ] 
     then
