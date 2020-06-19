@@ -7,6 +7,17 @@ ARQUIVO='.zshenv' #name default file
 # ARQUIVO='.bash_sprofile' #name default file
 
 
+identify_terminal_version(){
+    if [ -n "$ZSH_VERSION" ]; then
+        echo "------------------------- zsh -------------------------"
+    elif [ -n "$BASH_VERSION" ]; then
+        echo "------------------------- bash -------------------------"
+    else
+        echo "------------------------- else -------------------------"
+    fi
+}
+
+
 #load plugin nvm - controll npm version
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
