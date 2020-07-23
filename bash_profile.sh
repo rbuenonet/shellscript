@@ -61,7 +61,7 @@ alias web='c;ionic serve'
 alias android='c; ionic_change_icon android; ionic cordova build android; copy platforms/android/app/build/outputs/apk/debug/app-debug.apk ultima_versao/app.apk; adb install -r ultima_versao/app.apk'
 alias androidprod='c; ionic_change_icon android; ionic cordova build android --prod --release --configBuild=build.json; copy platforms/android/app/build/outputs/apk/release/app-release.apk ultima_versao/app-release.apk; adb install -r ultima_versao/app-release.apk'
 alias ios='ionic_change_icon ios; c; ionic cordova build ios; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
-alias iosprod='ionic_change_icon ios; c; ionic cordova build ios --prod --minifycss; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
+alias iosprod='ionic_change_icon ios; cp ./firebase/producao/* ./; c; ionic cordova build ios --prod --minifycss; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
 alias certificado='cp -r  www/certificado/* ./certificado/'
 
 #aliasgit
@@ -72,6 +72,10 @@ alias gc="git commit --amend" #edita msg ultimo commit
 
 #alias npm
 alias npmg="npm list -g --depth=0" #lista todos os modulos instalados globalmente
+
+#alias ngrok
+alias ngrok="~/Projetos/ngrok"
+alias ngrokauth="ngrok authtoken 1f0a1SZJnxpul6rsk9eIm3zWSJz_87UBHUkWqndKN8DAmmp5R"
 
 
 #
