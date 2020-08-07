@@ -215,3 +215,18 @@ ios_einstein(){
 
     replace $FILE $SEARCH Atualização\ Médica\ Personalizada
 }
+
+
+
+#update exec function after sleep time
+#example: timeout [TIME SEGUNDS] [COMMAND]
+# timeout 2 echo 'pam'
+function timeout() { 
+    vazio=''
+    
+    time=$1
+    command=$(echo $@ | sed "s/$time //")
+
+    sleep $time
+    eval $command
+}
