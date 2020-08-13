@@ -59,7 +59,7 @@ alias clean="rm -rf www platforms plugins;c"
 alias cleanfull="clean; rm -rf node_modules .sourcemaps .vscode;c"
 alias web='c;ionic serve'
 alias android='c; ionic_change_icon android; ionic cordova build android; copy platforms/android/app/build/outputs/apk/debug/app-debug.apk ultima_versao/app.apk; adb install -r ultima_versao/app.apk'
-alias androidprod='c; ionic_change_icon android; ionic cordova build android --prod --release --configBuild=build.json; copy platforms/android/app/build/outputs/apk/release/app-release.apk ultima_versao/app-release.apk; adb install -r ultima_versao/app-release.apk'
+alias androidprod='c; ionic_change_icon android; cp ./firebase/producao/* ./; ionic cordova build android --prod --release --configBuild=build.json; copy platforms/android/app/build/outputs/apk/release/app-release.apk ultima_versao/app-release.apk; adb install -r ultima_versao/app-release.apk'
 alias ios='ionic_change_icon ios; c; ionic cordova build ios; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
 alias iosprod='ionic_change_icon ios; cp ./firebase/producao/* ./; c; ionic cordova build ios --prod --minifycss; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
 alias certificado='cp -r  www/certificado/* ./certificado/'
