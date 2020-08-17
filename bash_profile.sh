@@ -36,6 +36,9 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 # emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 
+# flutter
+export PATH=$PATH:$HOME/Library/Flutter/bin
+
 #put the actual path and branch name
 if [[ $ARQUIVO == *"zshenv"* ]]; then
     export PS1="%.%\ $(git_branch \( \))$"
