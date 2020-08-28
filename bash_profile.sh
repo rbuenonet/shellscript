@@ -96,7 +96,7 @@ git_branch() {
 }
 
 
-# update branch with other branch (default update with develop)
+# update branch with other branch (default update actual branch with develop)
 alias git_update_branch="git_load_branch"
 # example: git_load_branch
 # example: git_load_branch brnach_destino
@@ -200,15 +200,21 @@ docker_load(){
     
 }
 
-#stop and remove all exec conteiner's and images
+# stop and remove all exec conteiner's 
+# if remove images too, use "1" as parameter
 docker_clean(){
-    docker ps -a -q | while read line ; do echo "------------------------- Parando e excluindo conteiner $line -------------------------"; docker stop $line; docker rm $line; done
-    docker images -q | while read line ; do echo "------------------------- Excluindo imagem $line -------------------------"; docker image rm $line; done
+    docker ps -a -q | while read line ; do 
+        echo "------------------------- Parando e excluindo conteiner $line -------------------------"; 
+        docker stop $line; 
+        docker rm $line; 
+    done
+    if [[ $1 == *"1"* ]]; then
+        docker images -q | while read line ; do 
+            echo "------------------------- Excluindo imagem $line -------------------------"; 
+            docker image rm $line; 
+        done
+    fi
 }
-
-
-
-
 
 #alias einstein
 #update archive config in project, for change project name correct
@@ -218,8 +224,6 @@ ios_einstein(){
 
     replace $FILE $SEARCH Atualização\ Médica\ Personalizada
 }
-
-
 
 #update exec function after sleep time
 #example: timeout [TIME SEGUNDS] [COMMAND]
@@ -232,4 +236,41 @@ function timeout() {
 
     sleep $time
     eval $command
+}
+
+
+
+
+
+
+
+
+
+
+
+#arrumar um jeito de automatizar
+change_name_file(){
+
+    CAMINHO=$2
+    FILE=$1
+    SEPARADOR="_"
+    EXTENSION=".pdf"
+
+    NAME=$(echo $FILE | cut -c1-18)
+    DIA=$(echo $FILE | cut -c20-21)
+    MES=$(echo $FILE | cut -c23-24)
+    ANO=$(echo $FILE | cut -c26-29)
+
+    NEWNAME="$NAME$SEPARADOR$ANO$SEPARADOR$MES$SEPARADOR$DIA$EXTENSION"
+    mv $CAMINHO/$FILE $CAMINHO/$NEWNAME
+    
+
+    
+}
+
+teste(){
+    CAMINHO='/Users/renato/Einstein/Reports/vendas'
+
+    ls $CAMINHO | while read line ; do echo "\n------------------------- $line -------------------------\n"; change_name_file $line $CAMINHO; done
+
 }
