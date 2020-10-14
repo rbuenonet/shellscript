@@ -96,8 +96,6 @@ git_branch() {
 }
 
 
-# update branch with other branch (default update actual branch with develop)
-alias git_update_branch="git_load_branch"
 # example: git_load_branch
 # example: git_load_branch brnach_destino
 # example: git_load_branch brnach_destino branch_origem
