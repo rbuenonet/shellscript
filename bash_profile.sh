@@ -26,6 +26,8 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 #android configuration
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8.0_271)
+
 
 # avdmanager, sdkmanager
 export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
@@ -62,9 +64,9 @@ alias clean="rm -rf www platforms plugins;c"
 alias cleanfull="clean; rm -rf node_modules .sourcemaps .vscode;c"
 alias web='c;ionic serve'
 alias android='c; ionic_change_icon android; ionic cordova build android; copy platforms/android/app/build/outputs/apk/debug/app-debug.apk ultima_versao/app.apk; adb install -r ultima_versao/app.apk'
-alias androidprod='c; ionic_change_icon android; cp ./firebase/producao/* ./; ionic cordova build android --prod --release --configBuild=build.json; copy platforms/android/app/build/outputs/apk/release/app-release.apk ultima_versao/app-release.apk; adb install -r ultima_versao/app-release.apk'
+alias androidprod='c; ionic_change_icon android; cp -rf environment/environment.mobile.ts src/environment/environment.ts; cp ./firebase/producao/* ./; ionic cordova build android --no-interactive --confirm --prod --aot --minifyjs --minifycss --optimizejs --release --configBuild=build.json; copy platforms/android/app/build/outputs/apk/release/app-release.apk ultima_versao/app-release.apk; adb install -r ultima_versao/app-release.apk'
 alias ios='ionic_change_icon ios; c; ionic cordova build ios; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
-alias iosprod='ionic_change_icon ios; cp ./firebase/producao/* ./; c; ionic cordova build ios --prod --minifycss; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
+alias iosprod='c; ionic_change_icon ios; cp -rf environment/environment.mobile.ts src/environment/environment.ts; cp ./firebase/producao/* ./; ionic cordova build ios --no-interactive --confirm --prod --aot --minifyjs --minifycss --optimizejs; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
 alias certificado='cp -r  www/certificado/* ./certificado/'
 
 #aliasgit
@@ -179,6 +181,13 @@ replace(){
 ionic_change_icon(){
     PLATFORM=$1
     cp -rf resources/icon-$PLATFORM.png resources/icon.png;
+}
+
+ionic_plugin(){
+    PLUGIN=$1
+    
+    ionic cordova plugin rm $PLUGIN;
+    ionic cordova plugin add $PLUGIN;
 }
 
 #load dockerfile
