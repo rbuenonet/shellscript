@@ -203,7 +203,9 @@ docker_load(){
     fi
 
     Docker build -t $CONTEINER .
-    docker run -d -p 80:8080 $CONTEINER
+    docker run -v /Users/renato/Projetos/hiae/HIAE.AMP.Front:/usr/share/nginx/html -d -p 80:8080 $CONTEINER
+
+    #-v = tudo que tiver na pasta host (primeiro caminho) vai ser espelhado dentro do container (segundo caminho)
     
 }
 
@@ -256,28 +258,54 @@ function timeout() {
 
 
 #arrumar um jeito de automatizar
-change_name_file(){
+# change_name_file(){
 
-    CAMINHO=$2
-    FILE=$1
-    SEPARADOR="_"
-    EXTENSION=".pdf"
+#     CAMINHO=$2
+#     FILE=$1
+#     SEPARADOR="_"
+#     EXTENSION=".json"
 
-    NAME=$(echo $FILE | cut -c1-18)
-    DIA=$(echo $FILE | cut -c20-21)
-    MES=$(echo $FILE | cut -c23-24)
-    ANO=$(echo $FILE | cut -c26-29)
+#     NAME=$(echo $FILE | cut -c1-18)
+#     DIA=$(echo $FILE | cut -c20-21)
+#     MES=$(echo $FILE | cut -c23-24)
+#     ANO=$(echo $FILE | cut -c26-29)
 
-    NEWNAME="$NAME$SEPARADOR$ANO$SEPARADOR$MES$SEPARADOR$DIA$EXTENSION"
-    mv $CAMINHO/$FILE $CAMINHO/$NEWNAME
-    
+#     NEWNAME="$NAME$EXTENSION"
+#     mv $CAMINHO/$FILE $CAMINHO/$NEWNAME  
+# }
 
-    
-}
+# teste(){
+#     CAMINHO='./'
+
+#     ls $CAMINHO | while read line ; do echo "\n------------------------- $line -------------------------\n"; done
+
+# }
 
 teste(){
-    CAMINHO='/Users/renato/Einstein/Reports/vendas'
+    mkdir dump
+    cd dump
 
-    ls $CAMINHO | while read line ; do echo "\n------------------------- $line -------------------------\n"; change_name_file $line $CAMINHO; done
+    collections=(
+        AnaliseConteudo
+        AnaliseProposicaoAluno
+        AnaliseQuestao
+        AnaliseQuestaoAluno
+        Caso
+        HistoricoBuscaUsuario
+        MetricasConclusaoCurso
+        MetricasIndividualCurso
+        RelatorioConteudos
+        RelatorioProposicoes
+        RelatorioQuestoes
+    )
 
+    for c in "${collections[@]}"
+    do
+        echo "\n------------------------- $c -------------------------\n";
+        mongoexport --uri="mongodb://adm_amp:lkPPPjhy564R@LPVDB09:27017/db_AMP" --collection="$c" --out=$c.json
+
+        mongoimport --uri="mongodb://adm_amp:hghty68ooPPPlk@LQVDB05:27017/db_AMP" --collection="$c" --file=$c.json
+    done
+    
+    cd ..
 }
