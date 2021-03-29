@@ -87,6 +87,21 @@ alias ngrokauth="ngrok authtoken 1f0a1SZJnxpul6rsk9eIm3zWSJz_87UBHUkWqndKN8DAmmp
 #functions
 #
 
+#remove files in all folders
+superrm() {
+    if [ ! -z $1 ] 
+    then
+        FILE = $1
+        find .  -name $FILE | while read line ; do 
+            echo "------------------------- Removendo arquivo: $line -------------------------"; 
+            rm $line
+        done
+    else
+        echo "Error: necessario nome do arquivo por parametro";
+    fi
+    
+}
+
 #return name branch
 git_branch() {
     if [ -d .git ]; then
