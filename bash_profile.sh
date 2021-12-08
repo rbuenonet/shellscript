@@ -1,5 +1,5 @@
 # for load this arquive, only open the file .zshenv or .bash_sprofile and copy/paste next 2 command
-#ARQUIVE='/Users/renato/Projetos/_meus/shellscript/bash_profile.sh';
+ARQUIVE='/mnt/d/Projetos/_meu/shellscript/bash_profile.sh';
 #source $ARQUIVE;
 
 # next modified next line with name file
@@ -24,29 +24,24 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-#android configuration
-export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.8.0_271)
-
-
+# ------------------------------ android configuration ------------------------------
+# export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+# export JAVA_HOME=$(/usr/libexec/java_home -v 1.8.0_271)
 # avdmanager, sdkmanager
-export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
-
+# export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
 # adb, logcat
-export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
-
+# export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 # emulator
-export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
-
+# export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 # flutter
-export PATH=$PATH:$HOME/Library/Flutter/bin
+# export PATH=$PATH:$HOME/Library/Flutter/bin
 
-#put the actual path and branch name
-if [[ $ARQUIVO == *"zshenv"* ]]; then
-    export PS1="%.%\ $(git_branch \( \))$"
-else
-    export PS1="\W ($(git_branch))$"
-fi;
+#put the actual path and branch name (for mac)
+# if [[ $ARQUIVO == *"zshenv"* ]]; then
+#     export PS1="%.%\ $(git_branch \( \))$"
+# else
+#     export PS1="\W ($(git_branch))$"
+# fi;
 
 
 #shortcuts
@@ -59,16 +54,6 @@ alias aliasll="cat ~/$ARQUIVO $ARQUIVE"
 alias aliasedit="edit ~/$ARQUIVO $ARQUIVE"
 alias aliasreload="c; source ~/$ARQUIVO"
 
-#alias ionic
-alias clean="rm -rf www platforms plugins;c"
-alias cleanfull="clean; rm -rf node_modules .sourcemaps .vscode;c"
-alias web='c;ionic serve'
-alias android='c; ionic_change_icon android; ionic cordova build android; copy platforms/android/app/build/outputs/apk/debug/app-debug.apk ultima_versao/app.apk; adb install -r ultima_versao/app.apk'
-alias androidprod='c; ionic_change_icon android; cp -rf environment/environment.mobile.ts src/environment/environment.ts; cp ./firebase/producao/* ./; ionic cordova build android --no-interactive --confirm --prod --aot --minifyjs --minifycss --optimizejs --release --configBuild=build.json; copy platforms/android/app/build/outputs/apk/release/app-release.apk ultima_versao/app-release.apk; adb install -r ultima_versao/app-release.apk'
-alias ios='ionic_change_icon ios; c; ionic cordova build ios; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
-alias iosprod='c; ionic_change_icon ios; cp -rf environment/environment.mobile.ts src/environment/environment.ts; cp ./firebase/producao/* ./; ionic cordova build ios --no-interactive --confirm --prod --aot --minifyjs --minifycss --optimizejs; ios_einstein; open ./platforms/ios/AtualizacaoMedicaPersonalizada.xcworkspace'
-alias certificado='cp -r  www/certificado/* ./certificado/'
-
 #aliasgit
 alias gs="c;git status -sb" #lista de arquivos modificados
 alias gr="c;git reset --hard" #apaga todas as modificações não comitadas
@@ -77,11 +62,6 @@ alias gc="git commit --amend" #edita msg ultimo commit
 
 #alias npm
 alias npmg="npm list -g --depth=0" #lista todos os modulos instalados globalmente
-
-#alias ngrok
-alias ngrok="~/Projetos/ngrok"
-alias ngrokauth="ngrok authtoken 1f0a1SZJnxpul6rsk9eIm3zWSJz_87UBHUkWqndKN8DAmmp5R"
-
 
 #
 #functions
@@ -114,8 +94,8 @@ git_branch() {
 
 
 # example: git_load_branch
-# example: git_load_branch brnach_destino
-# example: git_load_branch brnach_destino branch_origem
+# example: git_load_branch branch_destino
+# example: git_load_branch branch_destino branch_origem
 git_load_branch(){
 
     if [ ! -z $1 ] 
@@ -176,7 +156,11 @@ copy(){
 }
 
 #update string in file
-#example: replace [NAME FILE] [STRING SEARCH] [NEW STRING]
+#command: replace [NAME FILE] [STRING SEARCH] [NEW STRING]
+#example: replace the string 'world' for 'bash' in the file file_example.txt
+#     FILE='file_example.txt'
+#     SEARCH='world'
+#     replace $FILE $SEARCH bash
 replace(){
     FILE=$1
     SEARCH=$2
@@ -189,20 +173,6 @@ replace(){
     echo "Trocado: $SEARCH"
     echo "Para: $OBJECT"
     echo -e "---------------------------------------------------------------------------\n"
-}
-
-#change file icon for platform
-# require 2 files in folder ./resources with name icon-[PLATFORM].png
-ionic_change_icon(){
-    PLATFORM=$1
-    cp -rf resources/icon-$PLATFORM.png resources/icon.png;
-}
-
-ionic_plugin(){
-    PLUGIN=$1
-    
-    ionic cordova plugin rm $PLUGIN;
-    ionic cordova plugin add $PLUGIN;
 }
 
 #load dockerfile
@@ -240,15 +210,6 @@ docker_clean(){
     fi
 }
 
-#alias einstein
-#update archive config in project, for change project name correct
-ios_einstein(){
-    FILE='platforms/ios/AtualizacaoMedicaPersonalizada/AtualizacaoMedicaPersonalizada-Info.plist'
-    SEARCH='AtualizacaoMedicaPersonalizada'
-
-    replace $FILE $SEARCH Atualização\ Médica\ Personalizada
-}
-
 #update exec function after sleep time
 #example: timeout [TIME SEGUNDS] [COMMAND]
 # timeout 2 echo 'pam'
@@ -268,59 +229,6 @@ function timeout() {
 
 
 
-
-
-
-
-#arrumar um jeito de automatizar
-# change_name_file(){
-
-#     CAMINHO=$2
-#     FILE=$1
-#     SEPARADOR="_"
-#     EXTENSION=".json"
-
-#     NAME=$(echo $FILE | cut -c1-18)
-#     DIA=$(echo $FILE | cut -c20-21)
-#     MES=$(echo $FILE | cut -c23-24)
-#     ANO=$(echo $FILE | cut -c26-29)
-
-#     NEWNAME="$NAME$EXTENSION"
-#     mv $CAMINHO/$FILE $CAMINHO/$NEWNAME  
-# }
-
-# teste(){
-#     CAMINHO='./'
-
-#     ls $CAMINHO | while read line ; do echo "\n------------------------- $line -------------------------\n"; done
-
-# }
-
 teste(){
-    mkdir dump
-    cd dump
-
-    collections=(
-        AnaliseConteudo
-        AnaliseProposicaoAluno
-        AnaliseQuestao
-        AnaliseQuestaoAluno
-        Caso
-        HistoricoBuscaUsuario
-        MetricasConclusaoCurso
-        MetricasIndividualCurso
-        RelatorioConteudos
-        RelatorioProposicoes
-        RelatorioQuestoes
-    )
-
-    for c in "${collections[@]}"
-    do
-        echo "\n------------------------- $c -------------------------\n";
-        mongoexport --uri="mongodb://adm_amp:lkPPPjhy564R@LPVDB09:27017/db_AMP" --collection="$c" --out=$c.json
-
-        mongoimport --uri="mongodb://adm_amp:hghty68ooPPPlk@LQVDB05:27017/db_AMP" --collection="$c" --file=$c.json
-    done
-    
-    cd ..
+    echo 'function for tests'
 }
