@@ -4,8 +4,8 @@
 #source $ARQUIVE;
 
 # next modified next line with name file
-ARQUIVO='.zshrc' #name default file
-# ARQUIVO='.bash_sprofile' #name default file
+#ARQUIVO='.zshrc' #name default file
+ARQUIVO='.bashrc' #name default file
 
 
 identify_terminal_version(){
@@ -21,12 +21,13 @@ identify_terminal_version(){
 
 # ------------------------------ nvm configuration ------------------------------
 #load plugin nvm - controll npm version
-#export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+#export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" # mac
+export NVM_DIR="$HOME/.nvm" # wsl
 #[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# ------------------------------ android configuration ------------------------------
+# ------------------------------ android configuration MAC ------------------------------
 # export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 # export JAVA_HOME=$(/usr/libexec/java_home -v 1.8.0_271)
 # avdmanager, sdkmanager
@@ -49,11 +50,11 @@ identify_terminal_version(){
 #shortcuts
 alias c='for i in {1..100}; do echo -e "\n"; done; clear'
 alias ll='c; ls -GFlah'
-alias edit='open -a "Visual Studio Code"'
+# alias edit='open -a "Visual Studio Code"' # Mac
 
 #alias control
 alias aliasll="cat ~/$ARQUIVO $ARQUIVE"
-alias aliasedit="edit ~/$ARQUIVO $ARQUIVE"
+alias aliasedit="code ~/ ~/Projetos "
 alias aliasreload="c; source ~/$ARQUIVO"
 
 #aliasgit
@@ -63,13 +64,9 @@ alias gl="c;git log --all --graph --decorate --oneline --abbrev-commit" #lista d
 alias gc="git commit --amend" #edita msg ultimo commit
 
 #alias npm
-alias npmg="npm list -g --depth=0" #lista todos os modulos instalados globalmente
-
-#alias mac
-alias ioslist="xcrun simctl list"
-alias nvm18="nvm use v18.19.0"
-
-alias csv="curl -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik8zWUgxWDNjaUNMWlNvM0tUQTFpQiJ9.eyJuaWNrbmFtZSI6InJlbmF0by5idWVubyIsIm5hbWUiOiJyZW5hdG8uYnVlbm9Ac2VlZHouYWciLCJwaWN0dXJlIjoiaHR0cHM6Ly9zLmdyYXZhdGFyLmNvbS9hdmF0YXIvODYxMzZjYzY0OWM3MWY5OTczMGUyYmEyNWM1NjNmNGE_cz00ODAmcj1wZyZkPWh0dHBzJTNBJTJGJTJGY2RuLmF1dGgwLmNvbSUyRmF2YXRhcnMlMkZyZS5wbmciLCJ1cGRhdGVkX2F0IjoiMjAyNC0wMS0xN1QxOTo0NDozOC4zMzFaIiwiZW1haWwiOiJyZW5hdG8uYnVlbm9Ac2VlZHouYWciLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOi8vbGFydXMtZGV2ZWxvcC51cy5hdXRoMC5jb20vIiwiYXVkIjoiM0NoVXZjNHhsSzIwSkhVcVc4bU9QVFhNVHZzaXhONWEiLCJpYXQiOjE3MDU1MjA2NzksImV4cCI6MTcwNTU1NjY3OSwic3ViIjoiYXV0aDB8NjU0MTQ1ZTgzY2UyMjc5NjE0YWJmY2FlIiwic2lkIjoiQ29hMERVaThnR3NEcTl1X2EtV3JkaV9ZeURxUnlrLXMifQ.jSlPmMkIzZEMgDbBJ3QHzjnejO2UwUGYkgwPvoQI4EQnVKqY1i0gasFWqjyyLX_t32DnhdcfK7MNHaswDs-X-_AympFw1Jc4665pa-LmW_95fw314lsvdLY8v9xhqhfgTAoum3oOqdEM3EOF38kUGJXp8-pTQc62-8mZNJJNnpc8TrmZ6aU4BWoaBcumjULHlNFRiLBEHIYOyhv4x9M-bucSeFlI1gwhQX9L2JnMjutYg2_yjJUNvn2vvBbHK-jc2zLB5VUPfO9AClmrZVmCGQeT4OLzgSZQfl0BA_nE8hCgKqTpKG_W3Y9a7BTG9Xgk5u-hsGBrShdZLsFRyTN-Ew' --location 'http://localhost:3000/research-form-answer/export/data?file-extension=csv' \ > teste.csv"
+alias npmg="c; npm list -g --depth=0" #lista todos os modulos instalados globalmente
+alias start='c; npm run start:dev'
+alias lint='c; npm run lint'
 
 #
 #functions
@@ -117,7 +114,7 @@ git_load_branch(){
     then
         ORIGIN=$2
     else
-        ORIGIN="develop"
+        ORIGIN="dev"
     fi    
 
     c;
@@ -229,6 +226,33 @@ function timeout() {
 
     sleep $time
     eval $command
+}
+
+#release network port
+#example: fp [PORT]
+# timeout 12200
+fp() { #freeport
+  if [ -z "$1" ]; then
+    echo "❌ Porta não informada. Uso: freeport <porta>"
+    return 1
+  fi
+
+  PORT=$1
+  PID=$(lsof -ti :$PORT)
+
+  if [ -z "$PID" ]; then
+    echo "✅ Porta $PORT está livre."
+  else
+    echo "⚠️ Porta $PORT está sendo usada pelo processo PID: $PID"
+    lsof -i :$PORT
+    read -p "Deseja matar o processo? [s/N]: " CONFIRM
+    if [[ "$CONFIRM" =~ ^[sS]$ ]]; then
+      kill -9 $PID
+      echo "✅ Processo $PID foi finalizado e a porta $PORT está livre agora."
+    else
+      echo "❌ Ação cancelada. Processo continua rodando."
+    fi
+  fi
 }
 
 
