@@ -1,0 +1,1 @@
+git_set_prompt # customiza o prompt
