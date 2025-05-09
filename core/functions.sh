@@ -2,6 +2,20 @@
 # Arquivo de funções personalizadas para terminal
 # ------------------------------------------------------------------
 
+
+aliasll() {
+    local path="$HOME/Projetos/shellscript"
+
+    echo "🔧 Funções definidas:"
+    grep -hEr '^[a-zA-Z0-9_]+\s*\(\)\s*\{' "$path" | sed 's/^\s*//'
+
+    echo ""
+
+    echo "🔗 Aliases definidos:"
+    grep -hEr '^alias\s+[a-zA-Z0-9_]+=.*' "$path" | sed -E "s/^alias\s+([a-zA-Z0-9_]+)=.*(#.*)?/\1 \2/"
+}
+
+
 # Remove arquivos com o nome especificado em todas as subpastas
 # Uso: superrm nome_arquivo
 superrm() {
