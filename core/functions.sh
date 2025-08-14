@@ -4,7 +4,7 @@
 
 
 aliasll() {
-    local path="$HOME/Projetos/shellscript"
+    local path="$PATHPROJECT"
 
     echo "🔧 Funções definidas:"
     grep -hEr '^[a-zA-Z0-9_]+\s*\(\)\s*\{' "$path" | sed 's/^\s*//'

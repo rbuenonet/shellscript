@@ -6,6 +6,8 @@
 freeport() {
   if [ -z "$1" ]; then
     echo "❌ Porta não informada. Uso: freeport <porta>"
+    echo "------------- Portas disponíveis: ------------- "
+    lsof -i -P -n | grep LISTEN
     return 1
   fi
 
