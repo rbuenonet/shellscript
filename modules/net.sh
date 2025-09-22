@@ -4,19 +4,30 @@
 # ⚙️ Verifica se uma porta está livre. Se ocupada, oferece finalização do processo.
 # Uso: freeport <porta>
 freeport() {
+  local PORT=$1
+
   if [ -z "$1" ]; then
     echo "❌ Porta não informada. Uso: freeport <porta>"
     echo "------------- Portas disponíveis: ------------- "
     lsof -i -P -n | grep LISTEN
-    return 1
+
+    
+    echo ""
+    read -p "Escolha uma porta ou digite 'q' para sair: " choice
+
+    if [[ -z "$choice" || "$choice" == "q" ]]; then
+      echo "Operação cancelada."
+      return 0 # Saída bem-sucedida, pois o usuário cancelou
+    fi
+
+    PORT=$choice
   fi
 
-  if ! [[ "$1" =~ ^[0-9]+$ ]] || [ "$1" -lt 1 ] || [ "$1" -gt 65535 ]; then
+  if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; then
     echo "❌ Porta inválida. Informe um número entre 1 e 65535."
     return 1
   fi
-
-  local PORT=$1
+  
   local PID
   PID=$(lsof -ti :$PORT)
 
