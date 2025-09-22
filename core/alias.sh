@@ -17,3 +17,6 @@ alias ..='cd ..' # Alias para voltar um diretório
 alias ...='cd ../..' # Alias para voltar dois diretórios
 alias ....='cd ../../..' # Alias para voltar três diretórios
 
+declare -a PROJETOS=(
+    "~/Projetos/_lab"
+)

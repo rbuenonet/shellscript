@@ -96,3 +96,59 @@ print_dir_structure() {
         fi
     done
 }
+
+# Função que imprime a lista de projetos definidos em PROJETOS e permite selecionar um para entrar.
+# Uso: open
+# Para incluir novos caminhos, adicione-os ao array PROJETOS no arquivo .bashrc: PROJETOS+=("~/Projetos/Ettera")
+open(){
+    echo "Selecione um projeto para entrar:"
+    local projects=()
+    local project_paths=()
+    local i=1
+
+    for base_path in "${PROJETOS[@]}"; do
+        base_path_resolved=$(eval echo $base_path)
+        if [ -d "$base_path_resolved" ]; then
+            echo ""
+            echo "------ $base_path ------"
+            echo ""
+            for project_dir in "$base_path_resolved"/*; do
+                if [ -d "$project_dir" ]; then
+                    project_name=$(basename "$project_dir")
+                    projects+=("$project_name")
+                    project_paths+=("$project_dir")
+                    echo "[$i] $project_name"
+                    i=$((i + 1))
+                fi
+            done
+        fi
+    done
+
+    if [ ${#projects[@]} -eq 0 ]; then
+        echo "Nenhum projeto encontrado nos caminhos base definidos."
+        return 1
+    fi
+
+    echo ""
+    read -p "Escolha um número ou digite 'q' para sair: " choice
+    c;
+
+    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#projects[@]} ]; then
+        local selected_index=$((choice - 1))
+        local selected_path="${project_paths[$selected_index]}"
+        local selected_name="${projects[$selected_index]}"
+
+        cd "$selected_path" || { echo "Falha ao entrar no diretório."; return 1; }
+
+        if [ -d ".git" ]; then
+            git pull
+        fi
+
+        echo ""
+        echo "✅ Entrada em '$selected_name' realizada com sucesso."
+    elif [[ "$choice" == "q" ]]; then
+        echo "⚠️ Operação cancelada."
+    else
+        echo "❌ Escolha inválida."
+    fi
+}
